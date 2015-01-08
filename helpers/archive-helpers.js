@@ -48,12 +48,12 @@ module.exports.addUrlToList = function(url, callback){
 };
 
 module.exports.loadArchivedUrl = function(url, callback){
-  url = url.substr(7);
+  url = url.substr(0, 7) === 'http://' ? url.substr(7) : url;
   fs.readFile(this.paths.archivedSites + '/' + url, callback);
 };
 
 module.exports.isURLArchived = function(url, callback){
-  url = url.substr(7);
+  url = url.substr(0, 7) === 'http://' ? url.substr(7) : url;
   fs.readdir(this.paths.archivedSites, function(err, directory){
     if(directory.indexOf(url) !== -1){
       callback(true);

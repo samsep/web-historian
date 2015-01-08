@@ -27,10 +27,12 @@ exports.handleRequest = function (req, res) {
       var url = req.url.substr(1);
       archive.isURLArchived(url, function(trueOrFalse){
         if(trueOrFalse){
-          archive.loadArchivedUrl(req.url, function(err, html){
+          archive.loadArchivedUrl(url, function(err, html){
             // if true send saved version
             // res.send('archive.paths.archivedSites/' + body)
-            res.writeHead(200, httpHelpers.headers);
+            var headers = httpHelpers.headers;
+            headers['Content-Type'] = 'text/html';
+            res.writeHead(200, headers);
             res.end(html);
           });
         } else {
