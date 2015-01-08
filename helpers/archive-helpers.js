@@ -33,8 +33,7 @@ module.exports.readListOfUrls = function(callback){
 module.exports.isUrlInList = function(url, callback){
   this.readListOfUrls(function(err, data) {
     data = data.split("\n");
-    console.log(data);
-    if(data.indexOf(url) !== -1){
+    if(data.indexOf(url) > -1){
       // we have a match
       callback(true);
     } else {
@@ -45,14 +44,16 @@ module.exports.isUrlInList = function(url, callback){
 };
 
 module.exports.addUrlToList = function(url, callback){
-  fs.appendFile(this.paths.list, url+"\n", callback);
+  fs.appendFile(this.paths.list, url + "\n", callback);
 };
 
 module.exports.loadArchivedUrl = function(url, callback){
-  fs.readFile(this.paths.archivedSites + url, callback);
+  url = url.substr(7);
+  fs.readFile(this.paths.archivedSites + '/' + url, callback);
 };
 
 module.exports.isURLArchived = function(url, callback){
+  url = url.substr(7);
   fs.readdir(this.paths.archivedSites, function(err, directory){
     if(directory.indexOf(url) !== -1){
       callback(true);
